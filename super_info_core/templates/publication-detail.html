@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<body>
+	{% include 'banner.html' %}
+    <div class="container-fluid">
+        <main class="tm-main">
+            <!-- Search form -->
+           <div class="row tm-row">
+                <div class="col-12">
+                    <form action="{% url 'home_url' %}" method="GET" class="form-inline tm-mb-80 tm-search-form">
+                        <input class="form-control tm-search-input" name="query" type="text" placeholder="Search..." aria-label="Search">
+                        <button class="tm-search-button" type="submit">
+                            <i class="fas fa-search tm-search-icon" aria-hidden="true"></i>
+                        </button>
+                    </form>
+                </div>
+            <div class="row tm-row">
+                <div class="col-lg-8 tm-post-col">
+                    <div class="tm-post-full">
+                        <div class="mb-4">
+                            <h2 class="pt-2 tm-color-primary tm-post-title">{{ publication.title }}</h2>
+                            <p class="tm-mb-40">{{ publication.category }}</p>
+                            <p class="tm-mb-40">{{ publication.created_at }}</p>
+
+                            <img src="{{ publication.image.url }}" alt="Image" class="img-fluid">
+
+                            <p>{{ publication.description|safe }}</p>
+                            <span class="d-block text-right tm-color-primary">Hashtags: {% for hashtag_item in publication.hashtags.all %} #{{ hashtag_item.title }} {% endfor %}</span>
+                        </div>
+
+                        <!-- Comments -->
+                        <div>
+                            <h2 class="tm-color-primary tm-post-title">Comments</h2>
+                            <hr class="tm-hr-primary tm-mb-45">
+                            {% for item in publication.comments.all %}
+                             <div class="tm-comment-reply tm-mb-45">
+                                <hr>
+                                <div class="tm-comment">
+                                    <figure class="tm-comment-figure">
+                                        <figcaption class="tm-color-primary text-center">{{ item.name }}</figcaption>
+                                    </figure>
+                                    <p>
+                                        {{ item.text }}
+                                    </p>
+                                </div>
+                                <span class="d-block text-right tm-color-primary">{{ item.created_at }}</span>
+                            </div>
+                            {% endfor %}
+                            <form action=" " method="post" class="mb-5 tm-comment-form">
+                                {% csrf_token %}
+                                <h2 class="tm-color-primary tm-post-title mb-4">Your comment</h2>
+                                <div class="mb-4">
+                                    <input class="form-control" name="name" type="text" placeholder="Your name">
+                                </div>
+                                <div class="mb-4">
+                                    <textarea class="form-control" name="message" rows="6" placeholder="Your comment text"></textarea>
+                                </div>
+                                <div class="text-right">
+                                    <button class="tm-btn tm-btn-primary tm-btn-small">Отправить</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+                <aside class="col-lg-4 tm-aside-col">
+                    <div class="tm-post-sidebar">
+                        <hr class="mb-3 tm-hr-primary">
+                        <h2 class="mb-4 tm-post-title tm-color-primary">Категории</h2>
+                        <ul class="tm-mb-75 pl-5 tm-category-list">
+                            {% for item in categories %}
+                            <li><a href="/home/?category_pk={{ item.id }}" class="tm-color-primary">{{ item.title }}</a></li>
+                            {% endfor %}
+
+                        </ul>
+                        <hr class="mb-3 tm-hr-primary">
+                        <h2 class="tm-mb-40 tm-post-title tm-color-primary">Похожие публикации</h2>
+                        {% for item in publication.category.publications.all %}
+                        <a href="{% url 'publication_url' item.id %}" class="d-block tm-mb-40">
+                            <figure>
+                                <img src="{{ item.image.url }}" alt="Image" class="mb-3 img-fluid">
+                                <figcaption class="tm-color-primary">{{ item.title }}</figcaption>
+                            </figure>
+                        </a>
+                        {% endfor %}
+
+                    </div>
+                </aside>
+            </div>
+            {% include 'footer-part1.html' %}
+           </div>
+        </main>
+    </div>
+    {% include 'footer-part2.html' %}
+</body>
+{% endblock %}

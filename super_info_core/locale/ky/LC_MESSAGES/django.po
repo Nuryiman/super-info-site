@@ -1,0 +1,75 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-08-23 18:20+0600\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: .\super_info_core\settings.py:126
+msgid "Russian"
+msgstr ""
+
+#: .\super_info_core\settings.py:127
+msgid "Kyrgyz"
+msgstr ""
+
+#: .\templates\banner.html:17
+#, fuzzy
+#| msgid "Страница"
+msgid "Главная"
+msgstr "Башкы бет"
+
+#: .\templates\banner.html:23
+msgid "Обратная связь"
+msgstr "Пикир"
+
+#: .\templates\index.html:21
+msgid "Искать"
+msgstr "Издоо"
+
+#: .\templates\index.html:38
+msgid "Новая"
+msgstr "Жаны"
+
+#: .\templates\index.html:46
+msgid "хэштеги"
+msgstr "хэштегтер"
+
+#: .\templates\index.html:51
+#, fuzzy
+#| msgid "Комментарий"
+msgid "Коменттариев"
+msgstr "Комментарий"
+
+#: .\templates\index.html:56
+msgid "Публикации не найдены"
+msgstr "Публикациялар табылган жок"
+
+#: .\templates\index.html:62 .\templates\index.html:64
+msgid "Пред."
+msgstr "Артка"
+
+#: .\templates\index.html:68 .\templates\index.html:70
+msgid "След."
+msgstr "Кийинки"
+
+#: .\templates\index.html:74
+msgid "Страница"
+msgstr "Бет"
+
+#: .\templates\index.html:74
+msgid "из"
+msgstr "ушунчадан"

@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+{% block content %}
+<body>
+    {% include 'banner.html' %}
+    <div class="container-fluid">
+        <main class="tm-main">
+            <!-- Search form -->
+            <div class="row tm-row">
+                <div class="col-12">
+                    <ul>
+                        <li class="tm-paging-item {% if request.LANGUAGE_CODE == 'ru' %}active{% endif %}">
+                            <a href="/ru/home/" class="mb-2 tm-btn tm-paging-link active">ру</a>
+                        </li>
+                        <li class="tm-paging-item {% if request.LANGUAGE_CODE == 'ky' %}active{% endif %}">
+                            <a href="/ky/home" class="mb-2 tm-btn tm-paging-link">кы</a>
+                        </li>
+                    </ul>
+                    <form action="?{% if request.GET.category_pk %}category_pk={{ request.GET.category_pk }}&{% endif %}query={{ request.GET.query }}" method="GET" class="form-inline tm-mb-80 tm-search-form">
+                            <input class="form-control tm-search-input" name="query" type="text" placeholder="{% trans 'Искать' %}" {% if input_query %} value="{{ input_query }}" {% endif %} aria-label="Search">
+                        <button class="tm-search-button" type="submit">
+                            <i class="fas fa-search tm-search-icon" aria-hidden="true"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="row tm-row">
+                {% if page_obj %}
+                    {% for item in page_obj %}
+                    <article class="col-12 col-md-6 tm-post">
+                        <hr class="tm-hr-primary">
+                        <a href="{% url 'publication_url' item.id %}" class="effect-lily tm-post-link tm-pt-60">
+                            <div class="tm-post-link-inner">
+                                <img src="{{ item.image.url }}" alt="Image" class="img-fluid">
+                            </div>
+                            {% if item.is_new %}
+                                <span class="position-absolute tm-new-badge">{% trans 'Новая' %}</span>
+                            {% endif %}
+                            <h2 class="tm-pt-30 tm-color-primary tm-post-title">{{ item.title }}</h2>
+                        </a>
+                        <p class="tm-pt-30">
+                            {{ item.short_description }}
+                        </p>
+                        <div class="d-flex justify-content-between tm-pt-45">
+                            <span class="tm-color-primary">{% trans 'хэштеги' %}: {% for hashtag_item in item.hashtags.all %} #{{ hashtag_item.title }} {% endfor %}</span>
+                            <span class="tm-color-primary">{{ item.created_at }}</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between">
+                            <span>{{ item.comments.count }} {% trans 'Коменттариев' %}</span>
+                        </div>
+                    </article>
+                    {% endfor %}
+                {% else %}
+                    <p>{% trans 'Публикации не найдены' %}.</p>
+                {% endif %}
+            </div>
+            <div class="row tm-row tm-mt-100 tm-mb-75">
+                <div class="tm-prev-next-wrapper">
+                    {% if page_obj.has_previous %}
+                        <a href="?{% if request.GET.query %}query={{ request.GET.query }}&{% endif %}{% if request.GET.category_pk %}category_pk={{ request.GET.category_pk }}&{% endif %}page={{ page_obj.previous_page_number }}" class="mb-2 tm-btn tm-btn-primary tm-prev-next tm-mr-20">{% trans 'Пред.' %}</a>
+                    {% else %}
+                        <span class="mb-2 tm-btn tm-btn-primary tm-prev-next disabled tm-mr-20">{% trans 'Пред.' %}</span>
+                    {% endif %}
+
+                    {% if page_obj.has_next %}
+                        <a href="?{% if request.GET.query %}query={{ request.GET.query }}&{% endif %}{% if request.GET.category_pk %}category_pk={{ request.GET.category_pk }}&{% endif %}page={{ page_obj.next_page_number }}" class="mb-2 tm-btn tm-btn-primary tm-prev-next">{% trans 'След.' %}</a>
+                    {% else %}
+                        <span class="mb-2 tm-btn tm-btn-primary tm-prev-next disabled">{% trans 'След.' %}</span>
+                    {% endif %}
+                </div>
+                <div class="tm-paging-wrapper">
+                    <span class="d-inline-block mr-3">{% trans 'Страница' %} {{ page_obj.number }} {% trans 'из' %} {{ paginator.num_pages }}</span>
+                    <nav class="tm-paging-nav d-inline-block">
+                        <ul>
+                            {% for num in paginator.page_range %}
+                                    <li class="tm-paging-item {% if page_obj.number == num %} active {% endif %}">
+                                        <a href="?{% if request.GET.query %}query={{ request.GET.query }}&{% endif %}{% if request.GET.category_pk %}category_pk={{ request.GET.category_pk }}&{% endif %}page={{ num }}" class="mb-2 tm-btn tm-paging-link">{{ num }}</a>
+                                    </li>
+                            {% endfor %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            {% include 'footer-part1.html' %}
+        </main>
+    </div>
+    {% include 'footer-part2.html' %}
+</body>
+{% endblock %}
