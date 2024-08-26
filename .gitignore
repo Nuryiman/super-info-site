@@ -1,3 +1,5 @@
 venv/
 static/
 config.py
+media/
+.idea/
