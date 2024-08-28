@@ -29,7 +29,7 @@ urlpatterns = [
 ]
 
 urlpatterns += i18n_patterns(
-    path('home/', HomeView.as_view(), name='home_url'),
+    path('', HomeView.as_view(), name='home_url'),
     path('contact/', ContactView.as_view(), name='contact_url'),
     path('publication_detail/<int:pk>/', PublicationDetailView.as_view(), name='publication_url'),
     path('publication_detail/<int:pk>/comment/', PublicationDetailView.as_view(), name='comment_url'),
