@@ -216,4 +216,4 @@ CKEDITOR_CONFIGS = {
     }
 }
 
-from local_settings import SECRET_KEY
+from .local_settings import SECRET_KEY

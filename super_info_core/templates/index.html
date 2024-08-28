@@ -11,10 +11,10 @@
                 <div class="col-12">
                     <ul>
                         <li class="tm-paging-item {% if request.LANGUAGE_CODE == 'ru' %}active{% endif %}">
-                            <a href="/ru/home/" class="mb-2 tm-btn tm-paging-link active">ру</a>
+                            <a href="/ru/" class="mb-2 tm-btn tm-paging-link active">ру</a>
                         </li>
                         <li class="tm-paging-item {% if request.LANGUAGE_CODE == 'ky' %}active{% endif %}">
-                            <a href="/ky/home" class="mb-2 tm-btn tm-paging-link">кы</a>
+                            <a href="/ky/" class="mb-2 tm-btn tm-paging-link">кы</a>
                         </li>
                     </ul>
                     <form action="?{% if request.GET.category_pk %}category_pk={{ request.GET.category_pk }}&{% endif %}query={{ request.GET.query }}" method="GET" class="form-inline tm-mb-80 tm-search-form">

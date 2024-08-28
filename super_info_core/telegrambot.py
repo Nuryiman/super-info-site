@@ -1,5 +1,12 @@
 import os
 import django
+
+# Установите переменную окружения DJANGO_SETTINGS_MODULE на ваш файл с настройками
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'super_info_core.settings')
+
+# Инициализируйте Django
+django.setup()
+
 from django.conf import settings
 from django.core.files import File
 import datetime
@@ -8,13 +15,6 @@ from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 from config import API_TOKEN_BOT
 from news.models import Publication, Category, Hashtag
 from news.views import LOID
-
-
-# Установите переменную окружения DJANGO_SETTINGS_MODULE на ваш файл с настройками
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'super_info_core.settings')
-
-# Инициализируйте Django
-django.setup()
 
 
 SAVE_PATH = os.path.join(settings.MEDIA_ROOT, 'telegram_img/')
@@ -44,7 +44,7 @@ def category(message):
 
 
 @bot.message_handler(commands=['create_hashtag'])
-def create_category(message):
+def create_hashtag(message):
     new_hashtag = bot.send_message(message.chat.id, "Напишите название хэштега:")
     bot.register_next_step_handler(new_hashtag, hashtag)
 
@@ -121,18 +121,14 @@ def blog_hashtag(message):
 def blog_image(message):
     global file_name
     try:
-        # Получаем информацию о файле
         file_info = bot.get_file(message.photo[-1].file_id)
         downloaded_file = bot.download_file(file_info.file_path)
 
-        # Получаем название файла из описания (caption)
         file_name = message.caption if message.caption else datetime.datetime.now().strftime("%Y%m%d%H%M%S")
         file_name = f"{file_name}.jpg"
 
-        # Полный путь к файлу
         file_path = os.path.join(SAVE_PATH, file_name)
 
-        # Сохраняем файл
         with open(file_path, 'wb') as new_file:
             new_file.write(downloaded_file)
 
@@ -152,15 +148,13 @@ def send_blog(callback):
     if callback.data == "send":
         file_path = os.path.join(SAVE_PATH, file_name)
         with open(file_path, 'rb') as f:
-            # Создаем объект File на основе открытого файла
             django_file = File(f)
-            # Сохраняем файл в базе данных
             blog = Publication.objects.create(
                 title=title,
                 category=Category.objects.get(id=category_id),
                 short_description=short_description,
                 description=description,
-                image=django_file,  # django_file уже содержит относительный путь
+                image=django_file,
             )
             blog.hashtags.add(*hashtags)
         bot.send_message(callback.message.chat.id, "Публикация отправлена")
@@ -170,5 +164,6 @@ def send_blog(callback):
     elif callback.data == "net":
         msg = bot.send_message(callback.message.chat.id, "Хорошо, заново выберите хэштеги")
         bot.register_next_step_handler(msg, blog_hashtag)
+
 
 bot.infinity_polling()
